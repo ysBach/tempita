@@ -19,7 +19,6 @@ looper you can get a better sense of the context.  Use like::
 """
 
 import sys
-from tempita.compat3 import basestring_
 
 __all__ = ['looper']
 
@@ -95,9 +94,6 @@ class loop_pos(object):
             return None
     __next__ = property(__next__)
 
-    if sys.version < "3":
-        next = __next__
-
     def previous(self):
         if self.pos == 0:
             return None
@@ -149,7 +145,7 @@ class loop_pos(object):
     def _compare_group(self, item, other, getter):
         if getter is None:
             return item != other
-        elif (isinstance(getter, basestring_)
+        elif (isinstance(getter, (str, bytes))
               and getter.startswith('.')):
             getter = getter[1:]
             if getter.endswith('()'):

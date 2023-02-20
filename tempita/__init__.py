@@ -37,13 +37,22 @@ import os
 import tokenize
 from io import StringIO
 from tempita._looper import looper
-from tempita.compat3 import basestring_, is_unicode, coerce_text
 
 __all__ = ['TemplateError', 'Template', 'sub', 'HTMLTemplate',
            'sub_html', 'html', 'bunch']
 
 in_re = re.compile(r'\s+in\s+')
 var_re = re.compile(r'^[a-z_][a-z0-9_]*$', re.I)
+
+
+def coerce_text(v):
+    if not isinstance(v, (bytes, str)):
+        attr = '__str__'
+        if hasattr(v, attr):
+            return str(v)
+        else:
+            return bytes(v)
+    return v
 
 
 class TemplateError(Exception):
@@ -109,7 +118,7 @@ class Template(object):
             self.default_namespace['end_braces'] = delimeters[1]
         self.delimeters = delimeters
 
-        self._unicode = is_unicode(content)
+        self._unicode = isinstance(content, str)
         if name is None and stacklevel is not None:
             try:
                 caller = sys._getframe(stacklevel)
@@ -335,7 +344,7 @@ class Template(object):
             else:
                 if not isinstance(value, (bytes, str)):
                     value = coerce_text(value)
-                if (is_unicode(value) and self.default_encoding):
+                if (isinstance(value, str) and self.default_encoding):
                     value = value.encode(self.default_encoding)
         except:
             exc_info = sys.exc_info()
@@ -357,7 +366,7 @@ class Template(object):
                         e.start,
                         e.end,
                         e.reason + ' in string %r' % value)
-            elif not self._unicode and is_unicode(value):
+            elif not self._unicode and isinstance(value, str):
                 if not self.default_encoding:
                     raise UnicodeEncodeError(
                         'Cannot encode unicode value %r into bytes '
@@ -450,7 +459,7 @@ def html_quote(value, force=True):
 
 def url(v):
     v = coerce_text(v)
-    if is_unicode(v):
+    if isinstance(v, str):
         v = v.encode('utf8')
     return url_quote(v)
 

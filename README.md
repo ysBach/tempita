@@ -1,15 +1,17 @@
-Tempita
--------
 This is a modified version of [`tempita`](https://github.com/agramfort/tempita):
 
 1. I dropped any support for python 2.
 2. I rewrote test module (`tempita/tests/test_tempita.py`) using `pytest`.
 3. All necessary things, including the tests, are included in a single folder (`tempita/`). You may just copy this folder and include it into your package to drop any external dependency. (N.B. `tempita` uses MIT license)
 
-I did this because the original package is not maintained (even the bitbucket repo is removed) while I cannot install it on py310 as of 2023 Feb.
+I did this because the original package is not maintained (even the bitbucket repo is removed) while I cannot install it on py310 as of 2023 Feb (using `conda install`).
+
+Please use this modified version at your own risk.
 
 
 # Original README
+Tempita
+-------
 A small templating language for text substitution, originally
 authored by [Ian Bicking](https://bitbucket.org/ianb).
 

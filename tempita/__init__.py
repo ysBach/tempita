@@ -1,4 +1,10 @@
 """
+Originally from
+[`tempita`](https://github.com/agramfort/tempita)
+Modification in https://github.com/ysBach/tempita
+
+ORIGINAL COMMENTS
+-----------------
 A small templating language
 
 This implements a small templating language.  This language implements

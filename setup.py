@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-from setuptools import find_packages
 import sys
-import os
 
 # Ridiculous as it may seem, we need to import multiprocessing and logging here
 # in order to get tests to pass smoothly on python 2.7.
@@ -34,13 +31,13 @@ def setup_python3():
             continue
         fl.process_template_line(line)
     dir_util.create_tree(tmp_src, fl.files)
-    outfiles_2to3 = []
-    for f in fl.files:
-        outf, copied = file_util.copy_file(f, join(tmp_src, f), update=1)
-        if copied and outf.endswith(".py"):
-            outfiles_2to3.append(outf)
+    # outfiles_2to3 = []
+    # for f in fl.files:
+    #     outf, copied = file_util.copy_file(f, join(tmp_src, f), update=1)
+    #     if copied and outf.endswith(".py"):
+    #         outfiles_2to3.append(outf)
 
-    util.run_2to3(outfiles_2to3)
+    # util.run_2to3(outfiles_2to3)
 
     # arrange setup to use the copy
     sys.path.insert(0, tmp_src)
@@ -48,17 +45,10 @@ def setup_python3():
     return tmp_src
 
 kwargs = {}
-if sys.version_info[0] >= 3:
-    from setuptools import setup
-    kwargs['use_2to3'] = True
-    kwargs['src_root'] = setup_python3()
-    assert setup
-else:
-    try:
-        from setuptools import setup
-        assert setup
-    except ImportError:
-        from distutils.core import setup
+from setuptools import setup
+# kwargs['use_2to3'] = True
+kwargs['src_root'] = setup_python3()
+assert setup
 
 
 setup(name='Tempita',
@@ -82,7 +72,6 @@ more to learn about it.
           'Intended Audience :: Developers',
           'License :: OSI Approved :: MIT License',
           'Topic :: Text Processing',
-          'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 3',
       ],
       keywords='templating template language html',
